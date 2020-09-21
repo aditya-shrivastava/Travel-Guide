@@ -1,16 +1,7 @@
-# travel_guide
+# Travel Guide
 
-A new Flutter project.
+## Packages Used
 
-## Getting Started
+-   flutter_svg: ^0.19.0
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+This is a travel guide app built around the theme of Durga Puja. A user will be presented with a list of multiple pandal, and they can choose which ones they want to visit by adding those pandals to their map. Once the user has added all the pandals to the map, the app will show a route connecting all those pandals and help navigate the user by tracking the user's live location. Users can also share their planned route with their friends via a generated code and the maps of the user and whoever they share their code with will be in sync.
