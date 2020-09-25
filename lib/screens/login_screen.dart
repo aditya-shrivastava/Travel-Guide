@@ -11,11 +11,18 @@ class _LoginScreenState extends State<LoginScreen> {
   static const String _locationSvg = 'assets/images/location.svg';
   final _emailController = new TextEditingController();
   final _passwordController = new TextEditingController();
+  bool _isHidden = true;
 
   final Widget svg = SvgPicture.asset(
     _locationSvg,
     semanticsLabel: 'Location SVG',
   );
+
+  void _toggleVisibility() {
+    setState(() {
+      _isHidden = !_isHidden;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,91 +55,118 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             SizedBox(height: 10),
             Container(
-              height: 50,
               padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
-              child: TextField(
-                textInputAction: TextInputAction.next,
-                keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(
-                  floatingLabelBehavior: FloatingLabelBehavior.never,
-                  labelText: 'email',
-                  labelStyle: Theme.of(context).textTheme.subtitle1,
-                  prefix: Container(
-                    width: MediaQuery.of(context).size.width - 285,
-                    child: Row(
-                      children: [
-                        Icon(
+              child: Column(
+                children: [
+                  Container(
+                    width: double.infinity,
+                    height: 50,
+                    child: TextField(
+                      textInputAction: TextInputAction.next,
+                      keyboardType: TextInputType.emailAddress,
+                      decoration: InputDecoration(
+                        prefixIcon: Icon(
                           Icons.person,
-                          color: Color.fromRGBO(35, 163, 203, 1),
+                          color: Theme.of(context).accentColor,
                         ),
-                        Text(
-                          'email',
-                          style: Theme.of(context).textTheme.subtitle1,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30),
                         ),
-                      ],
+                        labelText: 'email',
+                        labelStyle: Theme.of(context).textTheme.subtitle1,
+                      ),
+                      controller: _emailController,
                     ),
                   ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30),
+                  SizedBox(
+                    height: 10,
                   ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Color.fromRGBO(35, 163, 203, 1),
+                  Container(
+                    height: 50,
+                    child: TextField(
+                      obscureText: _isHidden,
+                      textInputAction: TextInputAction.done,
+                      keyboardType: TextInputType.visiblePassword,
+                      decoration: InputDecoration(
+                        prefixIcon: Icon(
+                          Icons.vpn_key,
+                          color: Theme.of(context).accentColor,
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        labelText: 'password',
+                        labelStyle: Theme.of(context).textTheme.subtitle1,
+                        suffixIcon: IconButton(
+                          icon: _isHidden
+                              ? Icon(
+                                  Icons.visibility,
+                                  color: Theme.of(context).accentColor,
+                                )
+                              : Icon(
+                                  Icons.visibility_off,
+                                  color: Theme.of(context).accentColor,
+                                ),
+                          onPressed: _toggleVisibility,
+                        ),
+                      ),
+                      controller: _passwordController,
                     ),
-                    borderRadius: BorderRadius.circular(30),
                   ),
-                ),
-                controller: _emailController,
+                ],
               ),
             ),
             SizedBox(height: 10),
             Container(
-              height: 50,
-              padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
-              child: TextField(
-                decoration: InputDecoration(
-                  floatingLabelBehavior: FloatingLabelBehavior.never,
-                  labelText: 'password',
-                  labelStyle: Theme.of(context).textTheme.subtitle1,
-                  prefix: Container(
-                    width: MediaQuery.of(context).size.width - 250,
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.lock,
-                          color: Color.fromRGBO(35, 163, 203, 1),
-                        ),
-                        Text(
-                          'password',
-                          style: Theme.of(context).textTheme.subtitle1,
-                        ),
-                      ],
-                    ),
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Color.fromRGBO(35, 163, 203, 1),
-                    ),
-                    borderRadius: BorderRadius.circular(30),
+              width: double.infinity,
+              height: 60,
+              padding:
+                  const EdgeInsets.symmetric(vertical: 10, horizontal: 100),
+              child: RaisedButton(
+                child: Text(
+                  'LOGIN',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
-                controller: _passwordController,
+                elevation: 5,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                color: Theme.of(context).primaryColor,
+                onPressed: () {
+                  print(_emailController.text);
+                  print(_passwordController.text);
+                },
               ),
             ),
-            SizedBox(height: 10),
-            RaisedButton(
-              child: Text(
-                'LOGIN',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
+            SizedBox(height: 5),
+            Text(
+              'Or Signin With',
+              style: Theme.of(context).textTheme.subtitle2,
+            ),
+            // Add google icon button
+            SizedBox(height: 50),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  'Don\'t have an account?',
+                  style: Theme.of(context).textTheme.subtitle2,
                 ),
-              ),
-              color: Theme.of(context).primaryColor,
-              onPressed: () {},
+                FlatButton(
+                  child: Text(
+                    'Sign Up',
+                    style: TextStyle(
+                      color: Colors.blue,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  onPressed: () {},
+                ),
+              ],
             ),
           ],
         ),

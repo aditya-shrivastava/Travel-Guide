@@ -16,6 +16,7 @@ class MyApp extends StatelessWidget {
       title: 'Travel Guide',
       theme: ThemeData(
         primaryColor: Colors.blue,
+        accentColor: Color.fromRGBO(35, 163, 203, 1),
         fontFamily: 'Raleway',
         visualDensity: VisualDensity.adaptivePlatformDensity,
         textTheme: TextTheme(
