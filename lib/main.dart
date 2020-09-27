@@ -29,6 +29,11 @@ class MyApp extends StatelessWidget {
             fontSize: 18,
             color: Color.fromRGBO(100, 100, 110, 1),
           ),
+          headline4: TextStyle(
+            fontSize: 18,
+            color: Color.fromRGBO(125, 114, 255, 0.6),
+            fontWeight: FontWeight.bold,
+          ),
           subtitle1: TextStyle(
             fontSize: 16,
             color: Color.fromRGBO(35, 163, 203, 1),
@@ -39,7 +44,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: SignupScreen(),
+      home: LoginScreen(),
       routes: {
         SignupScreen.routeName: (ctx) => SignupScreen(),
       },

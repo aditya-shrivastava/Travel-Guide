@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import '../icons/pass_key_icons.dart';
+import '../screens/signup_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   static const routeName = '/login';
@@ -60,17 +62,23 @@ class _LoginScreenState extends State<LoginScreen> {
                 children: [
                   Container(
                     width: double.infinity,
-                    height: 50,
                     child: TextField(
                       textInputAction: TextInputAction.next,
                       keyboardType: TextInputType.emailAddress,
                       decoration: InputDecoration(
+                        enabledBorder: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Theme.of(context).accentColor),
+                          borderRadius: BorderRadius.circular(35),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Theme.of(context).accentColor),
+                          borderRadius: BorderRadius.circular(35),
+                        ),
                         prefixIcon: Icon(
                           Icons.person,
                           color: Theme.of(context).accentColor,
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30),
                         ),
                         labelText: 'email',
                         labelStyle: Theme.of(context).textTheme.subtitle1,
@@ -82,18 +90,24 @@ class _LoginScreenState extends State<LoginScreen> {
                     height: 10,
                   ),
                   Container(
-                    height: 50,
                     child: TextField(
                       obscureText: _isHidden,
                       textInputAction: TextInputAction.done,
                       keyboardType: TextInputType.visiblePassword,
                       decoration: InputDecoration(
-                        prefixIcon: Icon(
-                          Icons.vpn_key,
-                          color: Theme.of(context).accentColor,
+                        enabledBorder: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Theme.of(context).accentColor),
+                          borderRadius: BorderRadius.circular(35),
                         ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Theme.of(context).accentColor),
+                          borderRadius: BorderRadius.circular(35),
+                        ),
+                        prefixIcon: Icon(
+                          Pass_key.key,
+                          color: Theme.of(context).accentColor,
                         ),
                         labelText: 'password',
                         labelStyle: Theme.of(context).textTheme.subtitle1,
@@ -147,7 +161,15 @@ class _LoginScreenState extends State<LoginScreen> {
               style: Theme.of(context).textTheme.subtitle2,
             ),
             // Add google icon button
-            SizedBox(height: 50),
+            Container(
+              height: 70,
+              width: 70,
+              child: FlatButton(
+                onPressed: () {},
+                child: Image.asset('./assets/images/google_icon.png'),
+              ),
+            ),
+            SizedBox(height: 5),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -156,15 +178,23 @@ class _LoginScreenState extends State<LoginScreen> {
                   'Don\'t have an account?',
                   style: Theme.of(context).textTheme.subtitle2,
                 ),
-                FlatButton(
-                  child: Text(
-                    'Sign Up',
+                InkWell(
+                  child: new Text(
+                    ' Sign Up',
                     style: TextStyle(
-                      color: Colors.blue,
-                      fontWeight: FontWeight.bold,
+                      color: Color.fromRGBO(45, 128, 209, 1),
                     ),
                   ),
-                  onPressed: () {},
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return SignupScreen();
+                        },
+                      ),
+                    );
+                  },
                 ),
               ],
             ),
