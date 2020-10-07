@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "215772505469",
+    "firebase_url": "https://flutter-travel-guide.firebaseio.com",
+    "project_id": "flutter-travel-guide",
+    "storage_bucket": "flutter-travel-guide.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:215772505469:android:802d82bc8e8acf2930d814",
+        "android_client_info": {
+          "package_name": "com.travel.guide"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "215772505469-0i2vp6vm7nl2rqjiaap23hias4okg6uv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.travel.guide",
+            "certificate_hash": "eb490ef7cabd4c65d063b4a2f02328cbfe072979"
+          }
+        },
+        {
+          "client_id": "215772505469-nscok8mll3tmtv6lb3j8tk1t6lq6qpuh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCGvX0zUZeR2toy2Dk9qJll3rvpBzSDwOQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "215772505469-nscok8mll3tmtv6lb3j8tk1t6lq6qpuh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
