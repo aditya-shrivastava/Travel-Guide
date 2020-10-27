@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
-import 'package:travel_guide/services/auth.dart';
+
+import './services/auth.dart';
+
+import './providers/pandals.dart';
 
 import './screens/login_screen.dart';
 import './screens/signup_screen.dart';
 import './screens/home_screen.dart';
+import './screens/pandal_details_screen.dart';
 
 void main() async {
   await DotEnv().load('.env');
@@ -17,16 +21,19 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
         providers: [
-          ChangeNotifierProvider.value(
-            value: AuthService(),
+          ChangeNotifierProvider(
+            create: (ctx) => AuthService(),
           ),
+          ChangeNotifierProvider(
+            create: (ctx) => Pandals(),
+          )
         ],
         child: Consumer<AuthService>(
           builder: (ctx, auth, _) => MaterialApp(
             debugShowCheckedModeBanner: false,
             title: 'Travel Guide',
             theme: ThemeData(
-              primaryColor: Colors.blue,
+              primaryColor: Color.fromRGBO(125, 114, 255, 1),
               accentColor: Color.fromRGBO(35, 163, 203, 1),
               fontFamily: 'Raleway',
               visualDensity: VisualDensity.adaptivePlatformDensity,
@@ -55,11 +62,13 @@ class MyApp extends StatelessWidget {
                 ),
               ),
             ),
-            home: auth.isAuth ? HomeScreen() : LoginScreen(),
+            home: HomeScreen(),
+            // auth.isAuth ? HomeScreen() : LoginScreen(),
             routes: {
               HomeScreen.route: (ctx) => HomeScreen(),
               LoginScreen.routeName: (ctx) => LoginScreen(),
               SignupScreen.routeName: (ctx) => SignupScreen(),
+              PandalDetailsScreen.routeName: (ctx) => PandalDetailsScreen(),
             },
           ),
         ));

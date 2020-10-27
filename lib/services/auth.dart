@@ -13,6 +13,7 @@ class AuthService with ChangeNotifier {
   final String apiKey = DotEnv().env['FIREBASE_API_KEY'];
 
   bool get isAuth {
+    print(token);
     return token != null;
   }
 
