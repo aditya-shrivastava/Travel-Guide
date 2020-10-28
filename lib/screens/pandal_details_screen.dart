@@ -18,28 +18,57 @@ class PandalDetailsScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Container(
+            Image.network(
+              pandal.imageUrl,
+              fit: BoxFit.cover,
               width: double.infinity,
-              height: MediaQuery.of(context).size.height - 440,
-              child: Image.network(pandal.imageUrl, fit: BoxFit.cover),
+              height: MediaQuery.of(context).size.height - 450,
             ),
             SizedBox(height: 10.0),
-            Text("Description: ${pandal.description}"),
-            SizedBox(height: 10.0),
-            Text("Metro: ${pandal.metro}"),
-            SizedBox(height: 10.0),
-            Text("Region: ${pandal.category}"),
-            SizedBox(height: 10.0),
-            FlatButton(
+            ListTile(
+              leading: Icon(
+                Icons.description,
+                color: Theme.of(context).primaryColor,
+              ),
+              title: Text(
+                pandal.description,
+                style: TextStyle(color: Colors.black54),
+              ),
+            ),
+            ListTile(
+              leading: Icon(
+                Icons.train,
+                color: Theme.of(context).primaryColor,
+              ),
+              title: Text(
+                pandal.metro == 'NULL' ? 'None' : pandal.metro,
+                style: TextStyle(color: Colors.black54),
+              ),
+            ),
+            ListTile(
+              leading: Icon(
+                Icons.my_location,
+                color: Theme.of(context).primaryColor,
+              ),
+              title: Text(
+                "${pandal.category} Region",
+                style: TextStyle(color: Colors.black54),
+              ),
+            ),
+            RaisedButton(
+              elevation: 3,
               onPressed: () {},
               child: Text(
                 'ADD TO MAP',
                 style: TextStyle(
-                  color: Theme.of(context).primaryColor,
+                  color: Colors.white,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              color: Colors.transparent,
+              color: Colors.deepPurple[300],
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
             ),
           ],
         ),
