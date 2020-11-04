@@ -55,11 +55,15 @@ class PandalDetailsScreen extends StatelessWidget {
                 style: TextStyle(color: Colors.black54),
               ),
             ),
+            SizedBox(height: 30),
             RaisedButton(
               elevation: 3,
-              onPressed: () {},
+              onPressed: () {
+                Provider.of<Pandals>(context, listen: false)
+                    .toggleFavorite(pandalId);
+              },
               child: Text(
-                'ADD TO MAP',
+                pandal.isFavorite ? 'REMOVE FROM MAP' : 'ADD TO MAP',
                 style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,

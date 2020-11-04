@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../providers/pandals.dart';
 
 import '../widgets/pandals_widget.dart';
+import '../widgets/drawer.dart';
 
 class HomeScreen extends StatefulWidget {
   static const route = '/home';
@@ -42,18 +43,14 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
-      drawer: Drawer(
-        elevation: 3,
-        child: Center(
-          child: Text('Hello Aditya!'),
-        ),
-      ),
+      drawer: SideDrawer(),
       body: ListView.builder(
         itemBuilder: (ctx, i) => PandalsWidget(
           _pandals[i].id,
           _pandals[i].title,
           _pandals[i].description,
           _pandals[i].imageUrl,
+          _pandals[i].isFavorite,
         ),
         itemCount: _pandals.length,
       ),

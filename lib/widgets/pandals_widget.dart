@@ -1,26 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../providers/pandals.dart';
 import '../screens/pandal_details_screen.dart';
 
-class PandalsWidget extends StatefulWidget {
+class PandalsWidget extends StatelessWidget {
   final String id;
   final String title;
   final String description;
   final String imageUrl;
+  final bool isFavorite;
 
   PandalsWidget(
     this.id,
     this.title,
     this.description,
     this.imageUrl,
+    this.isFavorite,
   );
-
-  @override
-  _PandalsWidgetState createState() => _PandalsWidgetState();
-}
-
-class _PandalsWidgetState extends State<PandalsWidget> {
-  var _added = false;
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +38,7 @@ class _PandalsWidgetState extends State<PandalsWidget> {
                     width: double.infinity,
                     height: MediaQuery.of(context).size.height - 480,
                     child: Image.network(
-                      widget.imageUrl,
+                      imageUrl,
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -49,7 +46,7 @@ class _PandalsWidgetState extends State<PandalsWidget> {
                     Navigator.pushNamed(
                       context,
                       PandalDetailsScreen.routeName,
-                      arguments: widget.id,
+                      arguments: id,
                     );
                   },
                 ),
@@ -60,29 +57,29 @@ class _PandalsWidgetState extends State<PandalsWidget> {
                   Padding(
                     padding: const EdgeInsets.only(left: 8.0),
                     child: Text(
-                      '${widget.title}',
+                      '$title',
                       style: TextStyle(
                         fontSize: 14,
                         color: Color.fromRGBO(35, 163, 203, 1),
                       ),
                     ),
                   ),
-                  IconButton(
-                    iconSize: 25,
-                    icon: _added
-                        ? Icon(
-                            Icons.bookmark,
-                            color: Colors.pink,
-                          )
-                        : Icon(
-                            Icons.bookmark_border,
-                            color: Colors.grey,
-                          ),
-                    onPressed: () {
-                      setState(() {
-                        _added = !_added;
-                      });
-                    },
+                  Consumer<Pandals>(
+                    builder: (context, value, _) => IconButton(
+                      iconSize: 25,
+                      icon: isFavorite
+                          ? Icon(
+                              Icons.pin_drop,
+                              color: Colors.pink,
+                            )
+                          : Icon(
+                              Icons.pin_drop,
+                              color: Colors.grey,
+                            ),
+                      onPressed: () =>
+                          Provider.of<Pandals>(context, listen: false)
+                              .toggleFavorite(id),
+                    ),
                   ),
                 ],
               ),

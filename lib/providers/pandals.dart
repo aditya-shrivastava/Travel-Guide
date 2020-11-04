@@ -1,6 +1,4 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 
 import '../models/pandal.dart';
 
@@ -248,5 +246,17 @@ class Pandals with ChangeNotifier {
   Pandal findById(String id) {
     Pandal _pandal = _pandals.firstWhere((pandal) => pandal.id == id);
     return _pandal;
+  }
+
+  void toggleFavorite(String id) {
+    Pandal _pandal = _pandals.firstWhere((pandal) => pandal.id == id);
+    _pandal.isFavorite = !_pandal.isFavorite;
+    notifyListeners();
+  }
+
+  List<Pandal> get favoritePandals {
+    List<Pandal> _favoritePandals =
+        _pandals.where((pandal) => pandal.isFavorite == true).toList();
+    return _favoritePandals;
   }
 }

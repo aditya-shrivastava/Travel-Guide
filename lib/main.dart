@@ -10,6 +10,7 @@ import './screens/login_screen.dart';
 import './screens/signup_screen.dart';
 import './screens/home_screen.dart';
 import './screens/pandal_details_screen.dart';
+import './screens/favorite_pandals.dart';
 
 void main() async {
   await DotEnv().load('.env');
@@ -69,6 +70,7 @@ class MyApp extends StatelessWidget {
               LoginScreen.routeName: (ctx) => LoginScreen(),
               SignupScreen.routeName: (ctx) => SignupScreen(),
               PandalDetailsScreen.routeName: (ctx) => PandalDetailsScreen(),
+              FavoritePandals.routeName: (ctx) => FavoritePandals(),
             },
           ),
         ));

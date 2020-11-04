@@ -9,6 +9,7 @@ class Pandal {
   final double lat;
   final double lon;
   final String imageUrl;
+  var isFavorite;
 
   Pandal({
     @required this.id,
@@ -19,5 +20,6 @@ class Pandal {
     @required this.lat,
     @required this.lon,
     @required this.imageUrl,
+    this.isFavorite: false,
   });
 }
