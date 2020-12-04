@@ -7,27 +7,15 @@ class SideDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Drawer(
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            InkWell(
-              child: Text(
-                'Your Pandals 🏛',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                ),
-              ),
-              onTap: () {
-                Navigator.of(context)
-                    .pushNamed(FavoritePandals.routeName)
-                    .then((_) => Navigator.pop(context));
-              },
-            ),
-          ],
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              Theme.of(context).primaryColor,
+              Color(0xFF8e2de2),
+            ],
+          ),
         ),
       ),
     );
