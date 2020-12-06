@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import '../providers/pandals.dart';
 
 import '../widgets/pandals_widget.dart';
-import '../widgets/drawer.dart';
+import '../widgets/side_drawer.dart';
 
 class HomeScreen extends StatefulWidget {
   static const route = '/home';
@@ -20,13 +20,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(
-            Icons.menu,
-            color: Colors.white,
-          ),
-          onPressed: () {},
-        ),
         title: Text('Pandals'),
         actions: [
           IconButton(

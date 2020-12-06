@@ -11,6 +11,7 @@ import './screens/signup_screen.dart';
 import './screens/home_screen.dart';
 import './screens/pandal_details_screen.dart';
 import './screens/favorite_pandals.dart';
+import './screens/splash_screen.dart';
 
 void main() async {
   await DotEnv().load('.env');
@@ -63,8 +64,15 @@ class MyApp extends StatelessWidget {
                 ),
               ),
             ),
-            home: HomeScreen(),
-            // auth.isAuth ? HomeScreen() : LoginScreen(),
+            home: auth.isAuth
+                ? HomeScreen()
+                : FutureBuilder(
+                    future: auth.tryAutoLogin(),
+                    builder: (ctx, authResult) =>
+                        authResult.connectionState == ConnectionState.waiting
+                            ? SplashScreen()
+                            : LoginScreen(),
+                  ),
             routes: {
               HomeScreen.route: (ctx) => HomeScreen(),
               LoginScreen.routeName: (ctx) => LoginScreen(),
