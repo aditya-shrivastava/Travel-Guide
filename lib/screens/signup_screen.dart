@@ -119,7 +119,7 @@ class _SignupScreenState extends State<SignupScreen> {
 
     try {
       await Provider.of<AuthService>(context, listen: false)
-          .signup(_email, _password);
+          .signup(_email, _password, _name);
     } on HttpException catch (error) {
       var errorMessage = 'Authentication failed';
       if (error.toString().contains('EMAIL_EXISTS')) {

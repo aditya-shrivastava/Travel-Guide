@@ -12,6 +12,7 @@ class AuthService with ChangeNotifier {
   String _token;
   DateTime _expiryDate;
   String _userId;
+  String _userName;
   final String apiKey = DotEnv().env['FIREBASE_API_KEY'];
 
   Timer _authTimer;
@@ -67,14 +68,29 @@ class AuthService with ChangeNotifier {
     }
   }
 
-  Future<void> signup(String email, String password) async {
+  Future<void> signup(String email, String password, String name) async {
     await _authenticate(email, password, 'accounts:signUp');
+    final url = 'https://flutter-travel-guide.firebaseio.com/users.json';
+    var userData = {
+      'name': name,
+      'email': email,
+      'imageUrl': null,
+      'location': null,
+      'pandals': [],
+    };
+    _userName = name;
+    final response = await http.post(url, body: json.encode(userData));
+    final data = json.decode(response.body);
+    final uid = data['name'];
+    // _userId = uid;
+    print(uid);
   }
 
   Future<void> login(String email, String password) async {
     await _authenticate(email, password, 'accounts:signInWithPassword');
     final _prefs = await SharedPreferences.getInstance();
     var userData = json.encode({
+      'name': _userName,
       'token': _token,
       'userId': _userId,
       'expiryDate': _expiryDate.toIso8601String(),
@@ -95,6 +111,7 @@ class AuthService with ChangeNotifier {
     }
 
     _token = _extractedData['token'];
+    _userName = _extractedData['name'];
     _userId = _extractedData['userId'];
     _expiryDate = expiryDate;
     notifyListeners();
@@ -108,6 +125,7 @@ class AuthService with ChangeNotifier {
     _token = null;
     _userId = null;
     _expiryDate = null;
+    _userName = null;
 
     notifyListeners();
     if (_authTimer != null) {

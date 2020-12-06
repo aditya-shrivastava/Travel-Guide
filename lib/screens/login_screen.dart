@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
+import 'package:travel_guide/screens/splash_screen.dart';
 
 import '../screens/signup_screen.dart';
 import '../services/auth.dart';
@@ -121,11 +122,7 @@ class _LoginScreenState extends State<LoginScreen> {
         toolbarHeight: 0,
       ),
       body: _isLoading
-          ? Center(
-              child: CircularProgressIndicator(
-                backgroundColor: Theme.of(context).primaryColor,
-              ),
-            )
+          ? SplashScreen()
           : SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
