@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
@@ -11,7 +12,6 @@ import './screens/signup_screen.dart';
 import './screens/home_screen.dart';
 import './screens/pandal_details_screen.dart';
 import './screens/favorite_pandals.dart';
-import './screens/splash_screen.dart';
 
 void main() async {
   await DotEnv().load('.env');
@@ -23,9 +23,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
         providers: [
-          ChangeNotifierProvider(
-            create: (ctx) => AuthService(),
-          ),
+          ChangeNotifierProvider(create: (ctx) => AuthService()),
           ChangeNotifierProvider(
             create: (ctx) => Pandals(),
           )
@@ -64,15 +62,14 @@ class MyApp extends StatelessWidget {
                 ),
               ),
             ),
-            home: auth.isAuth
-                ? HomeScreen()
-                : FutureBuilder(
-                    future: auth.tryAutoLogin(),
-                    builder: (ctx, authResult) =>
-                        authResult.connectionState == ConnectionState.waiting
-                            ? SplashScreen()
-                            : LoginScreen(),
-                  ),
+            home: StreamBuilder(
+                stream: FirebaseAuth.instance.onAuthStateChanged,
+                builder: (ctx, userSnapshot) {
+                  if (userSnapshot.hasData) {
+                    return HomeScreen();
+                  }
+                  return LoginScreen();
+                }),
             routes: {
               HomeScreen.route: (ctx) => HomeScreen(),
               LoginScreen.routeName: (ctx) => LoginScreen(),
