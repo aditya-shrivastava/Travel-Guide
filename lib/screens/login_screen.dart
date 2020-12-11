@@ -1,13 +1,15 @@
 import 'dart:ui';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:provider/provider.dart';
-import 'package:travel_guide/screens/splash_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import '../screens/splash_screen.dart';
 import '../screens/signup_screen.dart';
-import '../services/auth.dart';
-import '../models/http_exception.dart';
 
 import '../icons/pass_key_icons.dart';
 
@@ -22,6 +24,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   var _emailController = new TextEditingController();
   var _passwordController = new TextEditingController();
+
+  final _auth = FirebaseAuth.instance;
 
   bool _isHidden = true;
   bool _isLoading = false;
@@ -56,6 +60,9 @@ class _LoginScreenState extends State<LoginScreen> {
         ],
       ),
     );
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   Future<void> _submit() async {
@@ -88,29 +95,39 @@ class _LoginScreenState extends State<LoginScreen> {
     });
 
     try {
-      await Provider.of<AuthService>(context, listen: false)
-          .login(_email, _password);
-    } on HttpException catch (error) {
-      var errorMessage = 'Authentication failed';
-      if (error.toString().contains('INVALID_EMAIL')) {
-        errorMessage = 'Invalid email address';
-      } else if (error.toString().contains('EMAIL_NOT_FOUND')) {
-        errorMessage = 'Could not find a user with that email address';
-      } else if (error.toString().contains('INVALID_PASSWORD')) {
-        errorMessage = 'Incorrect Password';
-      }
-      _showErrorDialog(errorMessage);
+      final _prefs = await SharedPreferences.getInstance();
+      final _authResult = await _auth.signInWithEmailAndPassword(
+        email: _email,
+        password: _password,
+      );
+
+      final _doc = await Firestore.instance
+          .collection('users')
+          .document(_authResult.user.uid)
+          .get();
+
+      final _userData = json.encode({
+        'email': _doc.data['email'],
+        'displayName': _doc.data['displayName'],
+      });
+
+      _prefs.setString(
+        'userData',
+        _userData,
+      );
+
+      _emailController.clear();
+      _passwordController.clear();
+
+      setState(() {
+        _isLoading = false;
+      });
+    } on PlatformException catch (error) {
+      _showErrorDialog(error.message);
     } catch (error) {
       const errorMessage = 'Something went wrong. Please try again.';
       _showErrorDialog(errorMessage);
     }
-
-    _emailController.clear();
-    _passwordController.clear();
-
-    setState(() {
-      _isLoading = false;
-    });
   }
 
   @override

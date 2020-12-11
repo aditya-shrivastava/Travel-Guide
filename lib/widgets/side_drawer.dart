@@ -1,8 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../screens/favorite_pandals.dart';
-import '../services/auth.dart';
 
 class SideDrawer extends StatefulWidget {
   @override
@@ -11,6 +13,26 @@ class SideDrawer extends StatefulWidget {
 
 class _SideDrawerState extends State<SideDrawer> {
   var _uid = new TextEditingController();
+  var _displayName;
+  var _email;
+  var _prefs;
+
+  void fetchUserDetails() async {
+    _prefs = await SharedPreferences.getInstance();
+    final _userData =
+        json.decode(_prefs.getString('userData')) as Map<String, Object>;
+
+    setState(() {
+      _displayName = _userData['displayName'];
+      _email = _userData['email'];
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    fetchUserDetails();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +40,7 @@ class _SideDrawerState extends State<SideDrawer> {
       child: Column(
         children: [
           AppBar(
-            title: Text('user@email.com'),
+            title: Text(_email == null ? 'email@email.com' : _email),
             automaticallyImplyLeading: false,
           ),
           Padding(
@@ -33,7 +55,7 @@ class _SideDrawerState extends State<SideDrawer> {
             ),
           ),
           Text(
-            'user name',
+            _displayName == null ? 'username' : _displayName,
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w600,
@@ -121,7 +143,8 @@ class _SideDrawerState extends State<SideDrawer> {
             onPressed: () {
               Navigator.of(context).pop();
               Navigator.of(context).pushReplacementNamed('/');
-              Provider.of<AuthService>(context, listen: false).logout();
+              _prefs.clear();
+              FirebaseAuth.instance.signOut();
             },
           ),
         ],

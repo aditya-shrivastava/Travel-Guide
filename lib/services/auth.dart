@@ -6,7 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class AuthService with ChangeNotifier {
   final _auth = FirebaseAuth.instance;
 
-  Future<void> signup(String email, String password, String name) async {
+  void signup(String email, String password, String name) async {
     try {
       final authResult = await _auth.createUserWithEmailAndPassword(
         email: email,
@@ -28,7 +28,7 @@ class AuthService with ChangeNotifier {
     }
   }
 
-  Future<void> login(String email, String password) async {
+  void login(String email, String password) async {
     try {
       final authResult = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
@@ -38,13 +38,9 @@ class AuthService with ChangeNotifier {
           .document(authResult.user.uid)
           .get();
 
-      print(data);
+      print(data.data.entries.first);
     } catch (err) {
       print(err);
     }
-  }
-
-  Future<void> logout() {
-    return FirebaseAuth.instance.signOut();
   }
 }

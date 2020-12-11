@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../providers/pandals.dart';
 
@@ -18,6 +19,16 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final _pandals = Provider.of<Pandals>(context).pandals;
 
+    void fetchUser() async {
+      final _doc = await Firestore.instance
+          .collection('users')
+          .document('7l08LyAT4zceT0W8UeYcjFKGMjM2')
+          .get();
+
+      print(_doc.data['email']);
+      print(_doc.data['displayName']);
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Pandals'),
@@ -32,7 +43,9 @@ class _HomeScreenState extends State<HomeScreen> {
               Icons.location_on,
               color: Colors.white,
             ),
-            onPressed: () {},
+            onPressed: () {
+              fetchUser();
+            },
           ),
         ],
       ),
