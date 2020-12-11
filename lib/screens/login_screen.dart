@@ -98,31 +98,33 @@ class _LoginScreenState extends State<LoginScreen> {
 
     try {
       final _prefs = await SharedPreferences.getInstance();
-      final _authResult = await _auth.signInWithEmailAndPassword(
+      await _auth
+          .signInWithEmailAndPassword(
         email: _email,
         password: _password,
-      );
+      )
+          .then((result) async {
+        final _doc = await Firestore.instance
+            .collection('users')
+            .document(result.user.uid)
+            .get();
 
-      final _doc = await Firestore.instance
-          .collection('users')
-          .document(_authResult.user.uid)
-          .get();
+        final _userData = json.encode({
+          'email': _doc.data['email'],
+          'displayName': _doc.data['displayName'],
+        });
 
-      final _userData = json.encode({
-        'email': _doc.data['email'],
-        'displayName': _doc.data['displayName'],
-      });
+        _prefs.setString(
+          'userData',
+          _userData,
+        );
 
-      _prefs.setString(
-        'userData',
-        _userData,
-      );
+        _emailController.clear();
+        _passwordController.clear();
 
-      _emailController.clear();
-      _passwordController.clear();
-
-      setState(() {
-        _isLoading = false;
+        setState(() {
+          _isLoading = false;
+        });
       });
     } on PlatformException catch (error) {
       _showErrorDialog(error.message);
