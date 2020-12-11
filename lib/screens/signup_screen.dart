@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:provider/provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../screens/login_screen.dart';
-import '../services/auth.dart';
-import '../models/http_exception.dart';
 
 import '../icons/pass_key_icons.dart';
 
@@ -66,9 +66,13 @@ class _SignupScreenState extends State<SignupScreen> {
         ],
       ),
     );
+    setState(() {
+      _isLoading = false;
+    });
   }
 
-  Future<void> _submit() async {
+  void _submit() async {
+    final _auth = FirebaseAuth.instance;
     final String _name = _nameController.text.trim();
     final String _email = _emailController.text.trim();
     final String _password = _passwordController.text.trim();
@@ -118,31 +122,35 @@ class _SignupScreenState extends State<SignupScreen> {
     });
 
     try {
-      await Provider.of<AuthService>(context, listen: false)
-          .signup(_email, _password, _name);
-    } on HttpException catch (error) {
-      var errorMessage = 'Authentication failed';
-      if (error.toString().contains('EMAIL_EXISTS')) {
-        errorMessage = 'This email address is already in use';
-      } else if (error.toString().contains('INVALID_EMAIL')) {
-        errorMessage = 'Invalid email address';
-      } else if (error.toString().contains('WEAK_PASSWORD')) {
-        errorMessage = 'Password is too weak';
-      }
-      _showErrorDialog(errorMessage);
+      final _authResult = await _auth.createUserWithEmailAndPassword(
+        email: _email,
+        password: _password,
+      );
+
+      await Firestore.instance
+          .collection('users')
+          .document(_authResult.user.uid)
+          .setData({
+        'displayName': _name,
+        'email': _email,
+      });
+
+      _nameController.clear();
+      _emailController.clear();
+      _passwordController.clear();
+      _confirmpasswordController.clear();
+
+      setState(() {
+        _isLoading = false;
+      });
+
+      Navigator.of(context).pushReplacementNamed('/login');
+    } on PlatformException catch (error) {
+      _showErrorDialog(error.message);
     } catch (error) {
-      const errorMessage = 'Something went wrong. Please try again later';
+      const errorMessage = 'Something went wrong. Please try again.';
       _showErrorDialog(errorMessage);
     }
-
-    _nameController.clear();
-    _emailController.clear();
-    _passwordController.clear();
-    _confirmpasswordController.clear();
-
-    setState(() {
-      _isLoading = false;
-    });
   }
 
   @override

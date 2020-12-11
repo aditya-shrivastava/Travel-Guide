@@ -47,25 +47,27 @@ class _LoginScreenState extends State<LoginScreen> {
   void _showErrorDialog(String message) {
     showDialog(
       context: context,
-      builder: (ctx) => AlertDialog(
+      builder: (context) => AlertDialog(
         title: Text('Error Occurred!'),
         content: Text(message),
         actions: [
           FlatButton(
             child: Text('Okay'),
             onPressed: () {
-              Navigator.of(ctx).pop();
+              Navigator.of(context).pop();
             },
           )
         ],
       ),
     );
+    _emailController.clear();
+    _passwordController.clear();
     setState(() {
       _isLoading = false;
     });
   }
 
-  Future<void> _submit() async {
+  void _submit() async {
     final String _email = _emailController.text;
     final String _password = _passwordController.text;
 
