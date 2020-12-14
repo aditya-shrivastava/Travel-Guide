@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import '../screens/pandal_details_screen.dart';
 
@@ -14,8 +16,43 @@ class FavoritePandals extends StatelessWidget {
     List<Pandal> _favoritePandals =
         Provider.of<Pandals>(context).favoritePandals;
 
+    final globalKey = GlobalKey<ScaffoldState>();
+
+    final snackBar = SnackBar(
+      content: Text('Pandals added successfully!'),
+      backgroundColor: Colors.black,
+      elevation: 5.0,
+      duration: Duration(seconds: 1),
+    );
+
     return Scaffold(
-      appBar: AppBar(title: Text('Your Pandals')),
+      key: globalKey,
+      appBar: AppBar(
+        title: Text('Your Pandals'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.save),
+            onPressed: () async {
+              final user = await FirebaseAuth.instance.currentUser();
+              List<String> pandalsData = [];
+              _favoritePandals.forEach((element) {
+                pandalsData.add(element.id);
+              });
+              try {
+                await Firestore.instance
+                    .document('users/${user.uid}')
+                    .updateData({'pandals': pandalsData}).then((_) {
+                  globalKey.currentState.showSnackBar(snackBar);
+                }).then((_) {
+                  // Navigator.of(context).pop();
+                });
+              } catch (err) {
+                print(err);
+              }
+            },
+          )
+        ],
+      ),
       body: ListView.builder(
         itemBuilder: (ctx, i) => Dismissible(
           direction: DismissDirection.endToStart,

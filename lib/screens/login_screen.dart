@@ -44,17 +44,17 @@ class _LoginScreenState extends State<LoginScreen> {
     });
   }
 
-  void _showErrorDialog(String message) {
+  void _showErrorDialog(String message, BuildContext context) async {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
+      builder: (ctx) => AlertDialog(
         title: Text('Error Occurred!'),
         content: Text(message),
         actions: [
           FlatButton(
             child: Text('Okay'),
             onPressed: () {
-              Navigator.of(context).pop();
+              Navigator.of(ctx).pop();
             },
           )
         ],
@@ -127,10 +127,10 @@ class _LoginScreenState extends State<LoginScreen> {
         });
       });
     } on PlatformException catch (error) {
-      _showErrorDialog(error.message);
+      _showErrorDialog(error.message, context);
     } catch (error) {
       const errorMessage = 'Something went wrong. Please try again.';
-      _showErrorDialog(errorMessage);
+      _showErrorDialog(errorMessage, context);
     }
   }
 
