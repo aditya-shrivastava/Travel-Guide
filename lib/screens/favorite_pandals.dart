@@ -7,7 +7,6 @@ import '../screens/pandal_details_screen.dart';
 
 import '../models/pandal.dart';
 import '../providers/pandals.dart';
-import '../helpers/db_helper.dart';
 
 class FavoritePandals extends StatefulWidget {
   static const routeName = '/favorites';
