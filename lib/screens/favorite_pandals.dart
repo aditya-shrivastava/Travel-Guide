@@ -7,6 +7,7 @@ import '../screens/pandal_details_screen.dart';
 
 import '../models/pandal.dart';
 import '../providers/pandals.dart';
+import '../helpers/db_helper.dart';
 
 class FavoritePandals extends StatefulWidget {
   static const routeName = '/favorites';
@@ -22,7 +23,7 @@ class _FavoritePandalsState extends State<FavoritePandals> {
     List<Pandal> _data = await Provider.of<Pandals>(context, listen: false)
         .fetchFavoritePandals();
     setState(() {
-      _favoritePandals = _data;
+      _favoritePandals = _data == null ? [] : _data;
     });
   }
 
@@ -51,19 +52,19 @@ class _FavoritePandalsState extends State<FavoritePandals> {
           IconButton(
             icon: Icon(Icons.save),
             onPressed: () async {
+              if (_favoritePandals.isEmpty) {
+                return;
+              }
               final user = await FirebaseAuth.instance.currentUser();
               List<String> pandalsData = [];
               _favoritePandals.forEach((element) {
                 pandalsData.add(element.id);
               });
               try {
-                // _fetchPandals();
                 await Firestore.instance
                     .document('users/${user.uid}')
                     .updateData({'pandals': pandalsData}).then((_) {
                   globalKey.currentState.showSnackBar(snackBar);
-                }).then((_) {
-                  // Navigator.of(context).pop();
                 });
               } catch (err) {
                 print(err);

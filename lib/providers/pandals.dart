@@ -263,6 +263,8 @@ class Pandals with ChangeNotifier {
         'imageUrl': _pandal.imageUrl,
       };
       DBHelper.insert('favorite_pandals', data);
+    } else {
+      DBHelper.delete('favorite_pandals', id);
     }
   }
 
