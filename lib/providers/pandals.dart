@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../helpers/db_helper.dart';
 import '../models/pandal.dart';
 
 class Pandals with ChangeNotifier {
@@ -252,11 +253,42 @@ class Pandals with ChangeNotifier {
     Pandal _pandal = _pandals.firstWhere((pandal) => pandal.id == id);
     _pandal.isFavorite = !_pandal.isFavorite;
     notifyListeners();
+    if (_pandal.isFavorite) {
+      var data = {
+        'id': _pandal.id,
+        'title': _pandal.title,
+        'category': _pandal.category,
+        'description': _pandal.description,
+        'metro': _pandal.metro,
+        'imageUrl': _pandal.imageUrl,
+      };
+      DBHelper.insert('favorite_pandals', data);
+    }
   }
 
-  List<Pandal> get favoritePandals {
-    List<Pandal> _favoritePandals =
-        _pandals.where((pandal) => pandal.isFavorite == true).toList();
+  Future<List<Pandal>> fetchFavoritePandals() async {
+    List<Pandal> _favoritePandals;
+    List<Map<String, dynamic>> data =
+        await DBHelper.getData('favorite_pandals');
+
+    _favoritePandals = data
+        .map((item) => Pandal(
+              id: item['id'],
+              title: item['title'],
+              category: item['category'],
+              description: item['description'],
+              metro: item['metro'],
+              imageUrl: item['imageUrl'],
+              lat: null,
+              lon: null,
+            ))
+        .toList();
+
+    _favoritePandals.forEach((item) {
+      Pandal _pandal = findById(item.id);
+      _pandal.isFavorite = true;
+      notifyListeners();
+    });
     return _favoritePandals;
   }
 }

@@ -20,6 +20,8 @@ dependencies:
     loading_animations: ^2.1.0
     cloud_firestore: ^0.13.5
     firebase_auth: ^0.16.1
+    sqflite: ^1.1.5
+    path: ^1.6.2
 
 dev_dependencies:
     flutter_test:
