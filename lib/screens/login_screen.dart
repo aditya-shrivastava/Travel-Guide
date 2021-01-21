@@ -287,19 +287,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       },
                     ),
                   ),
-                  SizedBox(height: 5),
-                  Text(
-                    'Or Signin With',
-                    style: Theme.of(context).textTheme.subtitle2,
-                  ),
-                  Container(
-                    height: 70,
-                    width: 70,
-                    child: FlatButton(
-                      onPressed: () {},
-                      child: Image.asset('./assets/images/google_icon.png'),
-                    ),
-                  ),
+                  SizedBox(height: 40),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,

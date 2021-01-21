@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_config/flutter_config.dart';
 
 import './providers/pandals.dart';
 
@@ -9,8 +10,11 @@ import './screens/signup_screen.dart';
 import './screens/home_screen.dart';
 import './screens/pandal_details_screen.dart';
 import './screens/favorite_pandals.dart';
+import './screens/map_screen.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await FlutterConfig.loadEnvVariables();
   runApp(MyApp());
 }
 
@@ -70,6 +74,7 @@ class MyApp extends StatelessWidget {
           SignupScreen.routeName: (ctx) => SignupScreen(),
           PandalDetailsScreen.routeName: (ctx) => PandalDetailsScreen(),
           FavoritePandals.routeName: (ctx) => FavoritePandals(),
+          MapScreen.routeName: (ctx) => MapScreen(),
         },
       ),
     );

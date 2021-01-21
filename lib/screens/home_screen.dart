@@ -7,6 +7,8 @@ import '../models/pandal.dart';
 import '../widgets/pandals_widget.dart';
 import '../widgets/side_drawer.dart';
 
+import './map_screen.dart';
+
 class HomeScreen extends StatefulWidget {
   static const route = '/home';
 
@@ -40,16 +42,14 @@ class _HomeScreenState extends State<HomeScreen> {
         title: Text('Pandals'),
         actions: [
           IconButton(
-            icon: Icon(Icons.search),
-            onPressed: () {},
-            color: Colors.white,
-          ),
-          IconButton(
             icon: Icon(
               Icons.location_on,
               color: Colors.white,
             ),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (ctx) => MapScreen(), fullscreenDialog: true));
+            },
           ),
         ],
       ),
