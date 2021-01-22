@@ -31,10 +31,11 @@ class _MapScreenState extends State<MapScreen> {
   Map<MarkerId, Marker> _markers = <MarkerId, Marker>{};
   Map<CircleId, Circle> _circles = <CircleId, Circle>{};
   Map<PolylineId, Polyline> _polylines = {};
-  List<LatLng> polylineCoordinates = [];
   PolylinePoints polylinePoints = PolylinePoints();
   String googleAPIKey = FlutterConfig.get('GOOGLE_API_KEY');
   Timer timer;
+  double prevLat;
+  double prevLon;
 
   void _addMarkerAndCircle(
     double lat,
@@ -78,7 +79,15 @@ class _MapScreenState extends State<MapScreen> {
       fillColor: color,
     );
 
+    if (type != 'user') {
+      getPolylines(lat, lon, title, id);
+    }
+
     setState(() {
+      if (type != 'user') {
+        prevLat = lat;
+        prevLon = lon;
+      }
       _markers[markerId] = marker;
       _circles[circleId] = circle;
     });
@@ -193,6 +202,51 @@ class _MapScreenState extends State<MapScreen> {
     }
   }
 
+  void addPolyline(String pandalId, List<LatLng> polylineCoordinates) {
+    PolylineId id = PolylineId(pandalId);
+    Polyline polyline = Polyline(
+      polylineId: id,
+      color: Theme.of(context).primaryColor,
+      points: polylineCoordinates,
+      width: 4,
+    );
+    _polylines[id] = polyline;
+    setState(() {});
+  }
+
+  void getPolylines(
+    double lat,
+    double lon,
+    String location,
+    String pandalId,
+  ) async {
+    List<LatLng> polylineCoordinates = [];
+    double _originLat, _originLon;
+    if (prevLat == null) {
+      var _loc = await _locationTracker.getLocation();
+      _originLat = _loc.latitude;
+      _originLon = _loc.longitude;
+    } else {
+      _originLat = prevLat;
+      _originLon = prevLon;
+    }
+    PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
+      googleAPIKey,
+      PointLatLng(_originLat, _originLon),
+      PointLatLng(lat, lon),
+      travelMode: TravelMode.driving,
+      wayPoints: [PolylineWayPoint(location: location)],
+    );
+
+    if (result.points.isNotEmpty) {
+      result.points.forEach((PointLatLng point) {
+        polylineCoordinates.add(LatLng(point.latitude, point.longitude));
+      });
+    }
+
+    addPolyline(pandalId, polylineCoordinates);
+  }
+
   @override
   void dispose() {
     timer?.cancel();
@@ -231,7 +285,6 @@ class _MapScreenState extends State<MapScreen> {
               color: Colors.green,
               onPressed: () async {
                 getCurrentLocation();
-                // getPolylines();
               },
             ),
           ),

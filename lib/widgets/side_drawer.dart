@@ -247,7 +247,6 @@ class _SideDrawerState extends State<SideDrawer> {
               ),
               onPressed: () async {
                 await logout().then((_) {
-                  print('HOW?');
                   DBHelper.clear('favorite_pandals');
                   Navigator.of(context).pop();
                   Navigator.of(context).pushReplacementNamed('/');
