@@ -19,3 +19,13 @@ Users will also have the option to share their planned route with their friends 
     flushbar: ^1.10.4
     flutter_polyline_points: ^0.2.4
     flutter_config: ^1.0.8
+
+## Screenshots
+![Travel Guide](https://user-images.githubusercontent.com/39914834/189056241-d23da9c2-b994-49e6-970a-9448abce5233.png)
+![Travel Guide 1](https://user-images.githubusercontent.com/39914834/189056253-ac5da5dc-99cc-4b04-ab47-be60c8777005.png)
+![Travel Guide 3](https://user-images.githubusercontent.com/39914834/189056264-e7af41c8-1fd0-4bf0-a5bc-a223d5e3c2ac.png)
+![Travel Guide 4](https://user-images.githubusercontent.com/39914834/189056269-56691cb0-9914-4d22-8129-c053f426d1aa.png)
+![Travel Guide 5](https://user-images.githubusercontent.com/39914834/189056352-8ec74d85-5e59-424c-8a67-78bfa960869e.png)
+![Travel Guide 6](https://user-images.githubusercontent.com/39914834/189056375-2f6cb5a6-138d-4cd4-82ea-49f2e4a63e4f.png)
+
+
